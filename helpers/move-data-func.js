@@ -115,15 +115,25 @@ const moveDataUser = async () => {
                     user.age=$age
                 WITH user
                 MATCH (other:User)
-                WHERE other._id <> user._id AND user.age = other.age
-                MERGE (user)-[r:SIMILAR]-(other)
-                ON MATCH SET r.score = 1
-                ON CREATE SET r.score = 1
-                WITH user, other
-                WHERE other._id <> user._id AND user.gender = other.gender
-                MERGE (user)-[r:SIMILAR]-(other)
-                ON MATCH SET r.score = r.score + 1
-                ON CREATE SET r.score = 1
+                WHERE other._id <> user._id
+                CALL {
+                  WITH user, other
+                  WITH user, other
+                  WHERE user.gender = other.gender
+                  MERGE (user)-[r:SIMILAR]-(other)
+                  ON MATCH SET r.score =  r.score + 2
+                  ON CREATE SET r.score = 2
+
+                  UNION
+
+                  WITH user, other
+                  WITH user, other
+                  WHERE user.age = other.age
+                  MERGE (user)-[r:SIMILAR]-(other)
+                  ON MATCH SET r.score = r.score + 1
+                  ON CREATE SET r.score = 1
+                } 
+                
           `,
           {
             _id: _id,

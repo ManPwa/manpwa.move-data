@@ -5,6 +5,10 @@ const { moveDataManga, moveDataUser, moveDataRating } = require('./helpers/move-
 
 
 connectDb();
-moveDataManga();
-moveDataUser();
-moveDataRating();
+const movedata = async () => {
+    await moveDataManga();
+    await moveDataUser();
+    await moveDataRating();
+}
+
+movedata();
