@@ -87,7 +87,6 @@ const moveDataUser = async () => {
   let users = [];
   try {
     users = await User.find({
-      "is_admin": false,
       "_deleted": null
     });
   } catch (error) {
@@ -121,7 +120,7 @@ const moveDataUser = async () => {
                   WITH user, other
                   WHERE user.gender = other.gender
                   MERGE (user)-[r:SIMILAR]-(other)
-                  ON MATCH SET r.score =  r.score + 2
+                  ON MATCH SET r.score =  2
                   ON CREATE SET r.score = 2
 
                   UNION
