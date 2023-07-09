@@ -11,7 +11,7 @@ const neode = new Neode.fromEnv().with({
     Rating,
 });
 
-const driver = neo4j.driver(`bolt://127.0.0.1:7687`, neo4j.auth.basic(process.env.NEO4J_USERNAME, process.env.NEO4J_PASSWORD));
+const driver = neo4j.driver(process.env.NEO4J_URI, neo4j.auth.basic(process.env.NEO4J_USERNAME, process.env.NEO4J_PASSWORD));
 
 console.log('Neo4j is running');
 
