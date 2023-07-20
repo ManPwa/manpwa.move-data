@@ -18,10 +18,12 @@ const updateMangaData = async () => {
         console.log(`Updating ${manga.title}...`)
         const chapter_response = await fetch(`${base_url}/manga/${manga.id}/feed?translatedLanguage[]=en&limit=50&order[chapter]=desc`);
         const mychapterJson = await chapter_response.json();
+        check = false;
         for (const chapter of mychapterJson["data"]) {
             try {
                 attributes = chapter["attributes"]
                 if (Number(attributes["chapter"]) > manga.latest_chapter) {
+                    check = true;
                     const image_response = await fetch(`${base_url}/at-home/server/${chapter["id"]}`);
                     const myImageJson = await image_response.json();
                     await Chapter.create({
@@ -45,12 +47,14 @@ const updateMangaData = async () => {
                 console.log(e);
             }
         }
-        await Manga.findByIdAndUpdate(
-            manga.id,
-            {
-                "_updated": Date.now()
-            }
-        )
+        if (check) {
+            await Manga.findByIdAndUpdate(
+                manga.id,
+                {
+                    "_updated": Date.now()
+                }
+            )
+        }
     }
     console.log(`Done`)
 }
