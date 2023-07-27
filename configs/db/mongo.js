@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const connectDb = async () => {
     try {
-        const connect = await mongoose.connect(process.env.CONNECTION_STRING);
+        const option = {
+            socketTimeoutMS: 30000,
+            keepAlive: true
+        };
+        const connect = await mongoose.connect(process.env.CONNECTION_STRING, option);
         console.log(
             "Database connected: ", 
             connect.connection.host,

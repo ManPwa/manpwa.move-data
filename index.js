@@ -15,7 +15,7 @@ const movedata = async () => {
 }
 
 movedata();
-schedule.scheduleJob('0 0 0 * * *', async () => {
+schedule.scheduleJob('0 */30 * * * *', async () => {
     console.log(Date.now());
     await movedata();
 });
